@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/consultas.css')}}">
+    <link rel="shortcut icon" href="{{url_for('static', filename='imgs/favicon.ico')}}" type="image/x-icon">
+    <title>Consultas | Carolina Ramos Bertolino</title>
+</head>
+
+<body>
+
+    <header class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="row justify-content-center">
+                    <div class="col-4 col-sm-3 col-lg-2 col-xl-1">
+                        <img src="{{url_for('static', filename='imgs/logo.png')}}" alt="Carolina Ramos Bertolino Logo" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="container-fluid">
+        <div class="row justify-content-center">
+            {% if paciente.doc != 6127045 %}
+                <div class="col-12">
+                    <h3><b class="erro">{{ mensagem }}</b></h3>
+                    <h3>AGENDAR CONSULTA</h3>
+                </div>
+
+                <div class="col-12 col-sm-8 col-lg-6 col-xl-4">
+                    <div class="form">
+                        <div class="row justify-content-center">
+                            <form action="/consultas" method="POST">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 input">
+                                        <label for="dia">Dia</label>
+                                        <input type="date" name="dia" id="dia" required>
+                                    </div>
+                                    <div class="col-12 input">
+                                        <label for="hora">Hora</label>
+                                        <input type="time" name="hora" id="hora" min="08:00" max="18:00" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit">ENVIAR</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="col-12 mt-2">
+                {% if paciente.doc == 6127045 %}
+                    <h3>CONSULTAS</h3>
+                {% else %}
+                    <h3>SUAS CONSULTAS</h3>
+                {% endif %}
+            </div>
+
+            {% if paciente.doc == 6127045 %}
+                <div class="col-11 col-sm-10">
+                    <div class="row justify-content-center">
+                        <table class="col-12" cellpadding="5px">
+                            <thead class="col-12">
+                                <tr class="col-12">
+                                    <th class="col-1"><h4>Nº</h4></th>
+                                    <th class="col-2"><h4>STATUS</h4></th>
+                                    <th class="col-2"><h4>DATA</h4></th>
+                                    <th class="col-2"><h4>PACIENTE</h4></th>
+                                    <th class="col-1"><h4>HORÁRIO</h4></th>
+                                    <th class="col-1"><h4>APROVAÇÃO</h4></th>
+                                    <th class="col-3"><h4>PAGAMENTO</h4></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in consultas: %}
+                                    <tr class="col-12">
+                                        <td class="col-1"><p>{{i.idConsulta}}</p></td>
+                                        <td class="col-2"><p>{{i.status}}</p></td>
+                                        <td class="col-2"><p>{{i.data}}</p></td>
+                                        {% for p in pacientes: %}
+                                            {% if p.idPaciente == i.paciente %}
+                                                <td class="col-2"><p>{{p.nome}}</p></td>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <td class="col-1"><p>{{i.horario}}</p></td>
+                                        {% if i.status == "Aguardando aprovação" %}
+                                            <td class="col-1"><div class="buttons d-flex">
+                                                <a href="/consultas/aprovar/{{i.idConsulta}}"><img src="{{url_for('static', filename='imgs/aprovar.png')}}" alt="Aprovar" class="img-fluid"></a>
+                                                <a href="/consultas/reprovar/{{i.idConsulta}}"><img src="{{url_for('static', filename='imgs/recusar.png')}}" alt="Reprovar" class="img-fluid"></a>
+                                            </div></td>
+                                        {% endif %}
+                                        {% if i.status == "Agendada" %}
+                                            <td class="col-1"><div class="buttons d-flex"><span></span></td>
+                                        {% endif %}
+                                        {% if i.status == "Cancelada" %}
+                                            <td class="col-1"><div class="buttons d-flex"><span></span></td>
+                                        {% endif %}
+                                        {% if i.status == "Agendada" %}
+                                            {% if i.idConsulta in pagamentos %}
+                                                <td class="col-3"><p>PAGAMENTO GERADO</p></td>
+                                            {% else %}
+                                                <td class="col-3"><p class="text-center"><a href="/gerar-pagamento/{{i.idConsulta}}">GERAR PAGAMENTO</a></p></td>
+                                            {% endif %}
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <p class="text-center"><a href="/homepage">Voltar</a></p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-11 col-sm-8">
+                    <div class="row justify-content-center">
+                        <table class="col-12" cellpadding="5px">
+                            <thead class="col-12">
+                                <tr class="col-12">
+                                    <th class="col-3"><h4>Nº</h4></th>
+                                    <th class="col-4"><h4>STATUS</h4></th>
+                                    <th class="col-3"><h4>DATA</h4></th>
+                                    <th class="col-2"><h4>HORÁRIO</h4></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in consultas: %}
+                                    {% if i.paciente == paciente.idPaciente %}
+                                        <tr class="col-12">
+                                            <td class="col-3"><p>{{i.idConsulta}}</p></td>
+                                            <td class="col-4"><p>{{i.status}}</p></td>
+                                            <td class="col-3"><p>{{i.data}}</p></td>
+                                            <td class="col-2"><p>{{i.horario}}</p></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-center"><a href="/homepage">Voltar</a></p>
+                </div>
+            {% endif %}   
+        </div>
+    </section>
+
+
+    <footer class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <p>Rua Coronel Agenor de Camargo, 81 - 09020-220<br> 
+                    Centro - Santo André, SP<br> 
+                    (11) 98492-0089<br>                    
+                </p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <p><small>Copyright &copy; 2021 Carolina Ramos Bertolino</small></p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

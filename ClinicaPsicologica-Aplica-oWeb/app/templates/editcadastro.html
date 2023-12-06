@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/cadastro.css')}}">
+    <link rel="shortcut icon" href="{{url_for('static', filename='imgs/favicon.ico')}}" type="image/x-icon">
+    <title>Editar cadastro | Carolina Ramos Bertolino</title>
+</head>
+
+<body>
+
+    <header class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="row justify-content-center">
+                    <div class="col-4 col-sm-3 col-lg-2 col-xl-1">
+                        <img src="{{url_for('static', filename='imgs/logo.png')}}" alt="Carolina Ramos Bertolino Logo" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="container-fluid">
+        <div class="row justify-content-center">
+
+            <div class="col-12 mt-5">
+                {% if paciente.doc == 6127045 %}
+                    <h3>PACIENTES ATIVOS</h3>
+                {% else %}
+                    {{ mensagem }}
+                    <h3>EDITAR CADASTRO</h3>
+                {% endif %}
+            </div>
+
+            {% if paciente.doc == 6127045 %}
+                <div class="col-11">
+                    <div class="row justify-content-center">
+                        <table class="col-12" cellpadding="5px">
+                            <thead class="col-12">
+                                <tr class="col-12">
+                                    <th class="col-2"><h4>NOME</h4></th>
+                                    <th class="col-1"><h4>DOCUMENTO</h4></th>
+                                    <th class="col-2"><h4>EMAIL</h4></th>
+                                    <th class="col-2"><h4>ENDEREÇO</h4></th>
+                                    <th class="col-2"><h4>TELEFONE</h4></th>
+                                    <th class="col-1"><h4>CONVÊNIO</h4></th>
+                                    <th class="col-2"><h4>ARQUIVAR</h4></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in pacientes: %}
+                                    {% if i.arquivado == 0 %}
+                                        {% if i.doc != 6127045 %}
+                                            <tr class="col-12">
+                                                <td class="col-2"><p>{{i.nome}}</p></td>
+                                                <td class="col-1"><p>{{i.doc}}</p></td>
+                                                <td class="col-2"><p>{{i.email}}</p></td>
+                                                <td class="col-2"><p>{{i.endereco}}</p></td>
+                                                <td class="col-2"><p>{{i.telefone}}</p></td>
+                                                {% if i.convenio == 1 %}
+                                                    <td class="col-1"><p>Sim</p></td>
+                                                {% endif %}
+                                                {% if i.convenio == 0 %}
+                                                    <td class="col-1"><p>Não</p></td>
+                                                {% endif %}
+                                                <td class="col-2"><p><a href="/cadastro/arquivar/{{i.idPaciente}}">ARQUIVAR</a></p></td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if paciente.doc == 6127045 %}
+                <div class="col-12 mt-5">
+                    <h3>PACIENTES ARQUIVADOS</h3>
+                </div>
+            {% endif %}
+
+            {% if paciente.doc == 6127045 %}
+                <div class="col-11">
+                    <div class="row justify-content-center">
+                        <table class="col-12" cellpadding="5px">
+                            <thead class="col-12">
+                                <tr class="col-12">
+                                    <th class="col-2"><h4>NOME</h4></th>
+                                    <th class="col-1"><h4>DOCUMENTO</h4></th>
+                                    <th class="col-2"><h4>EMAIL</h4></th>
+                                    <th class="col-2"><h4>ENDEREÇO</h4></th>
+                                    <th class="col-2"><h4>TELEFONE</h4></th>
+                                    <th class="col-1"><h4>CONVÊNIO</h4></th>
+                                    <th class="col-2"><h4>DESARQUIVAR</h4></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in pacientes: %}
+                                    {% if i.arquivado == 1 %}
+                                        <tr class="col-12">
+                                            <td class="col-2"><p>{{i.nome}}</p></td>
+                                            <td class="col-1"><p>{{i.doc}}</p></td>
+                                            <td class="col-2"><p>{{i.email}}</p></td>
+                                            <td class="col-2"><p>{{i.endereco}}</p></td>
+                                            <td class="col-2"><p>{{i.telefone}}</p></td>
+                                            {% if i.convenio == 1 %}
+                                                <td class="col-1"><p>Sim</p></td>
+                                            {% endif %}
+                                            {% if i.convenio == 0 %}
+                                                <td class="col-1"><p>Não</p></td>
+                                            {% endif %}
+                                            <td class="col-2"><p><a href="/cadastro/desarquivar/{{i.idPaciente}}">DESARQUIVAR</a></p></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if paciente.doc != 6127045 %}
+                <div class="col-12 col-sm-8 col-lg-6 col-xl-4">
+                    <div class="form">
+                        <div class="row justify-content-center">
+                            <form action="/cadastro/editar" method="POST" class="col-12">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 input">
+                                        <label for="nome">Nome</label>
+                                        <input type="text" name="nome" autocomplete="off" required value="{{paciente.nome}}">
+                                    </div>
+                                    <div class="col-12 input">
+                                        <label for="sexo">Sexo</label>
+                                        <select name="sexo">
+                                            {% if paciente.sexo == 'masculino' %}
+                                                <option value="masculino" selected>Masculino</option>
+                                                <option value="feminino">Feminino</option>
+                                                <option value="outro">Outro</option>
+                                                <option value="none">Prefiro não informar</option>
+                                            {% endif %}
+                                            {% if paciente.sexo == 'feminino' %}
+                                                <option value="masculino">Masculino</option>
+                                                <option value="feminino" selected>Feminino</option>
+                                                <option value="outro">Outro</option>
+                                                <option value="none">Prefiro não informar</option>
+                                            {% endif %}
+                                            {% if paciente.sexo == 'outro' %}
+                                                <option value="masculino">Masculino</option>
+                                                <option value="feminino">Feminino</option>
+                                                <option value="outro" selected>Outro</option>
+                                                <option value="none">Prefiro não informar</option>
+                                            {% endif %}
+                                            {% if paciente.sexo == 'none' %}
+                                                <option value="masculino">Masculino</option>
+                                                <option value="feminino">Feminino</option>
+                                                <option value="outro">Outro</option>
+                                                <option value="none" selected>Prefiro não informar</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                    <div class="col-12 input">
+                                        <label for="cep">CEP</label>
+                                        <input type="number" name="cep" autocomplete="off" value="{{endereco[3]}}" required>
+                                    </div>
+                                    <div class="col-12 input">
+                                        <label for="numero">Número</label>
+                                        <input type="number" name="numero" autocomplete="off" value="{{endereco[1]}}" required>
+                                    </div>
+                                    <div class="col-12 input">
+                                        <label for="complemento">Complemento</label>
+                                        <input type="text" name="complemento" autocomplete="off" value="{{endereco[2]}}">
+                                    </div>
+                                    <div class="col-12 input">
+                                        <label for="telefone">Telefone</label>
+                                        <input type="number" name="telefone" autocomplete="off" value="{{paciente.telefone}}" required>
+                                    </div>
+                                    <div class="col-12 input">
+                                        <label for="email">Email</label>
+                                        <input type="email" name="email" autocomplete="off" value="{{paciente.email}}" required>
+                                    </div>
+                                    <div class="col-12 input">
+                                        <label for="senha">Senha</label>
+                                        <input type="password" name="senha" value="{{paciente.senha}}" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit">Salvar Alterações</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <p class="text-center"><a href="/homepage">Voltar</a></p>
+        </div>
+    </section>
+
+    
+    <footer class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <p>Rua Coronel Agenor de Camargo, 81 - 09020-220<br> 
+                    Centro - Santo André, SP<br> 
+                    (11) 98492-0089<br>                    
+                </p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <p><small>Copyright &copy; 2021 Carolina Ramos Bertolino</small></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

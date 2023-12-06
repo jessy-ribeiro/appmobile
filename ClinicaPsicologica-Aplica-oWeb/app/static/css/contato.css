@@ -1,0 +1,123 @@
+body {
+    background-color: #f1e8e3 !important;
+}
+
+header, footer {
+    background-color: #6388ba;
+}
+
+header ul {
+    list-style: none;
+    justify-content: space-around;
+    display: flex;
+}
+
+header ul a {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.5rem;
+    color: white;
+    text-decoration: none;
+}
+
+.mobile {
+    justify-content: space-between;
+}
+
+.bars {
+    cursor: pointer;
+    padding: 15% 5%;
+    width: 35vw;
+    height: 30vw;
+}
+
+.bars .bar {
+    margin-top: 5%;
+    margin-bottom: 10%;
+    border-radius: 50px;
+    width: 80%;
+    height: 15%;
+    background-color: white;
+}
+
+.menu-mobile {
+    background-color: #6388ba;
+    width: 70vw !important;
+    height: 100vh;
+    transition: 0.3s left ease-in-out;
+    position: absolute;
+}
+
+.menu-mobile ul {
+    display: block;
+}
+
+.menu-mobile ul li {
+    margin-top: 30%;
+}
+
+header ul a:hover {
+    transition: 0.3s ease-in-out;
+    font-weight: bold;
+    color: white;
+}
+
+footer p {
+    margin: 1rem 0;
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+}
+
+footer a {
+    margin: 1rem 0;
+}
+.contato {
+    margin: 2% 0;
+}
+
+.contato label {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.5rem;
+}
+
+.contato input {
+    box-shadow: 0rem 0rem 1rem rgb(209, 209, 209);
+    border: none;
+    height: 50px;
+    border-radius: 20px;
+}
+
+.contato textarea {
+    box-shadow: 0rem 0rem 1rem rgb(209, 209, 209);
+    border: none;
+    height: 200px;
+    border-radius: 20px;
+}
+
+h2{
+    font-family: "Playfair Display", serif;
+    font-size: 2.8rem;
+}
+
+p {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.2em;
+}
+
+button {
+    border-radius: 20px !important;
+    border: none;
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 1.3rem !important;
+    color: white;
+    margin-top: 5% !important;
+    padding: 3% 0;
+    background-color: #6388ba;
+}
+
+iframe {
+    border-radius: 20px;
+}
